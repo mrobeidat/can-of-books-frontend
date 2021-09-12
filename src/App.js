@@ -12,6 +12,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import LoginButton from './components/loginButton';
 
 class App extends React.Component {
 
@@ -23,11 +24,9 @@ class App extends React.Component {
           {/* <IsLoadingAndError> */}
             <Header />
             <Switch>
-              <Route exact path="/">
-              {this.props.auth0.isAuthinticated?<BestBooks/>:<Login/>}
-              <BestBooks/>
-                {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
-              </Route>
+            <Route exact path="/">
+              {this.props.auth0.isAuthenticated ? <BestBooks /> : <LoginButton />}
+            </Route>
               {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
               <Route exact path="/profile"> <Profile/>
               </Route>
