@@ -16,13 +16,14 @@ class MyFavoriteBooks extends React.Component {
   }
 
   componentDidMount = () => {
+    // alert('hi');
     const { user } = this.props.auth0;
     let email = user.email;
+    console.log(email)
     axios
       .get(`http://localhost:3050/getBook?email=${email}`)
       .then(result => {
-
-        this.setState = ({
+        this.setState({
           favBooksArr: result.data
         })
       })
@@ -32,9 +33,9 @@ class MyFavoriteBooks extends React.Component {
   }
   render() {
     return (
-      <Jumbotron>
+      <>
         <h1>My Favorite Books</h1>
-        
+        {this.state.favBooksArr.length}
           {this.state.favBooksArr.map(item => {
             return (
               <BookItem
@@ -43,8 +44,7 @@ class MyFavoriteBooks extends React.Component {
             )
           })
           }
-        
-      </Jumbotron>
+        </>
     )
   }
 }

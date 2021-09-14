@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Carousel from 'react-bootstrap/Carousel';
 class BookItem extends Component {
     render() {
         return (
@@ -9,7 +9,9 @@ class BookItem extends Component {
                 <p> {this.props.item.title}</p>
                 <p> {this.props.item.status}</p>
                 <p> {this.props.item.email} </p>
+
             </div>
+            
         )
     }
 }
