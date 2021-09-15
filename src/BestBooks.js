@@ -31,7 +31,7 @@ class MyFavoriteBooks extends React.Component {
     let email = user.email;
     console.log(email)
     axios
-      .get(`http://localhost:3050/getBook?email=${email}`)
+      .get(`https://book-app-site.herokuapp.com/getBook?email=${email}`)
       .then(result => {
         this.setState({
           favBooksArr: result.data
@@ -56,7 +56,7 @@ class MyFavoriteBooks extends React.Component {
     }
 
     axios
-      .post(`http://localhost:3050/addBook`, obj)
+      .post(`https://book-app-site.herokuapp.com/addBook`, obj)
       .then(result => {
         this.setState({
           favBooksArr: result.data
@@ -72,7 +72,7 @@ class MyFavoriteBooks extends React.Component {
     let email = user.email;
     axios
 
-      .delete(`http://localhost:3050/deleteBooks/${id}?email=${email}`)
+      .delete(`https://book-app-site.herokuapp.com/deleteBooks/${id}?email=${email}`)
       .then(result => {
         this.setState({
           favBooksArr: result.data
@@ -115,7 +115,7 @@ class MyFavoriteBooks extends React.Component {
       id: this.state.id
     }
     axios
-    .put(`http://localhost:3050/updateBook/${this.state.id}`, obj)
+    .put(`https://book-app-site.herokuapp.com/updateBook/${this.state.id}`, obj)
     .then(result =>{
       this.setState({
         favCatsArr:result.data,
