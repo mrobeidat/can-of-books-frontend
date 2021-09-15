@@ -10,7 +10,8 @@ class BookItem extends Component {
                 <p> {this.props.item.title}</p>
                 <p> {this.props.item.status}</p>
                 <p> {this.props.item.email} </p>
-                <button onClick={()=>this.props.deleteBook(this.props.item._id)}>delete</button>
+                <button onClick={() => this.props.deleteBook(this.props.item._id)}>Delete</button>
+                <button onClick={() => this.props.showModalUpdate(this.props.item)}>Update</button>
             </div>
 
         )

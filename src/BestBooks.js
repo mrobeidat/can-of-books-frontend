@@ -5,13 +5,22 @@ import './BestBooks.css';
 import { withAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import BookItem from './components/bookItem';
+import UpdateForm from './components/UpdateForm';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 class MyFavoriteBooks extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      favBooksArr: []
+      favBooksArr: [],
+      showModal: false,
+      title: '',
+      description: '',
+      status: '',
+      email: '',
+      id: ''
     }
   }
 
@@ -41,8 +50,9 @@ class MyFavoriteBooks extends React.Component {
     const obj = {
 
       title: event.target.title.value,
-      email: email,
-      status: event.target.status.value
+      description: event.target.description.value,
+      status: event.target.status.value,
+      email: email
     }
 
     axios
@@ -74,37 +84,97 @@ class MyFavoriteBooks extends React.Component {
       })
   }
 
+
+  handleClose = () => {
+    this.setState({
+      showModal: false
+    })
+  }
+  showModalUpdate = (item) => {
+    this.setState({
+      showModal: true,
+      title: item.title,
+      description: item.description,
+      status: item.status,
+      email: item.email,
+      id: item._id
+    })
+  }
+
+
+  updateBook = (event) => {
+    event.preventDefault();
+    const { user } = this.props.auth0;
+    const email = user.email;
+
+    const obj = {
+      title: event.target.title.value,
+      description: event.target.description.value,
+      status: event.target.status.value,
+      email: email,
+      id: this.state.id
+    }
+    axios
+    .put(`http://localhost:3050/updateBook/${this.state.id}`, obj)
+    .then(result =>{
+      this.setState({
+        favCatsArr:result.data,
+        showModal : false
+      })
+    })
+    .catch(err=>{
+      console.log('error in updating the data');
+    })
+  
+  }
+
+
   render() {
     return (
       <>
-        <form onSubmit={this.addBookHandler}>
+        <Form onSubmit={this.addBookHandler} style={{ marginLeft: "7px" }}>
           <fieldset>
             <legend>Add Book</legend>
-            <input type="text" name="title" />
-            <input type="text" name="email" />
-
-            <select name="status" id="status">
-              <option value="science">Romance</option>
-              <option value="novels">Action</option>
-              <option value="history">history</option>
+            <Form.Control type="text" name="title" placeholder="title" />
+            <br />
+            <br />
+            <Form.Control type="text" name="description" placeholder="description" />
+            <br />
+            <br />
+            <Form.Control type="text" name="email" placeholder="email@rhyta.com" />
+            <br />
+            <br />
+            <select name="status" id="status" placeholder="Select status">
+              <option value="science">science</option>
+              <option value="Romance">Romance</option>
+              <option value="Action">Action</option>
             </select>
-
-            <button type="submit">Add a book</button>
-
+            <br />
+            <br />
+            <Button type='submit'>Add book</Button>
           </fieldset>
-        </form>
+        </Form>
 
-        {this.state.favBooksArr.length}
+        {/* {this.state.favBooksArr.length} */}
         {this.state.favBooksArr.map(item => {
           return (
             <BookItem class="books"
               item={item}
               deleteBook={this.deleteBook}
-
+              showModalUpdate={this.showModalUpdate}
             />
           )
         })
         }
+        <UpdateForm
+          show={this.state.showModal}
+          handleClose={this.handleClose}
+          title={this.state.title}
+          description={this.state.description}
+          status={this.state.status}
+          email={this.state.email}
+          updateBook={this.updateBook}
+        />
       </>
     )
   }
